@@ -38,12 +38,12 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 1
+  m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -358,10 +358,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0b0c78ddacc9841a1c7f9da5c20041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Resolution: 256
-  SearchRadius: 0.25
+  Resolution: 64
+  SearchRadius: 1
   Exponent: 2
-  FalloffWeight: 2
+  FalloffWeight: 1
   Points:
   - {x: 0.5, y: 0.5}
   - {x: 1, y: 0.5}
@@ -376,13 +376,13 @@ MonoBehaviour:
   - 0.133
   - 0.66
   - -0.5
-  - 0
-  - 0
+  - -0.1
+  - -0.25
   Gradients:
   - {x: 4, y: 1}
   - {x: -6, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: -1, y: -1}

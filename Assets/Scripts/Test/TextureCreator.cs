@@ -27,6 +27,7 @@ public class TextureCreator : MonoBehaviour {
 	}
 
 	private void FillTexture() {
+		float t0 = Time.realtimeSinceStartup;
 		for (int x = 0; x < Resolution; x++) {
 			for (int y = 0; y < Resolution; y++) {
 				float value = Interpolator.Evaluate(new Vector2((float)x/(Resolution - 1.0f), (float)y/(Resolution - 1.0f)), Values, Gradients);
@@ -44,6 +45,7 @@ public class TextureCreator : MonoBehaviour {
 				}
 			}
 		}
+		Debug.Log("Time to generate texture: " + (Time.realtimeSinceStartup - t0));
 		Texture.Apply();
 	}
 
