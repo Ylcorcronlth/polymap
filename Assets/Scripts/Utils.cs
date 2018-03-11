@@ -59,6 +59,10 @@ public class Utils
         }
     }
 
+	public static int Abs(int x) {
+		return (x < 0 ? -x : x);
+	}
+
 	public static int Mod(int x, int y) {
 		int z = x%y;
 		return (z >= 0 ? z : z + y);
