@@ -10,13 +10,13 @@ public class TextureCreator : MonoBehaviour {
 	public float Exponent = 2.0f;
 	public float FalloffWeight = 1.0f;
 
-	private InverseDistanceWeighting Interpolator;
+	private Interpolate.InverseDistanceWeighting Interpolator;
 	public Vector2[] Points;
 	public float[] Values;
 	public Vector2[] Gradients;
 
 	private void CreateInterpolator() {
-		Interpolator = new InverseDistanceWeighting(Points, SearchRadius, Exponent, FalloffWeight);
+		Interpolator = new Interpolate.InverseDistanceWeighting(Points, SearchRadius, Exponent, FalloffWeight);
 	}
 
 	private void CreateTexture() {

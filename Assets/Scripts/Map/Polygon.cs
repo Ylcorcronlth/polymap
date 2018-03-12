@@ -92,5 +92,16 @@ namespace Hex {
 		public Vertex GetCorner(int direction) {
 			return this + _Corners[direction];
 		}
+
+		public Vector2 ToCartesian() {
+			return new Vector2(
+				Utils.SQRT3_2*q,
+				0.5f*q + r
+			);
+		}
+
+		public Polygon FromCartesian(Vector2 position) {
+			return FractionalPolygon.FromCartesian(position).Round();
+		}
 	}
 }

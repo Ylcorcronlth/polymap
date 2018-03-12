@@ -14,10 +14,9 @@ public class VertexGizmo : MonoBehaviour {
 		vertices = new List<Vector3>();
 		float t0 = Time.realtimeSinceStartup;
 		var map = Hex.Region.FlatRectangle(Width, Height, 0, 0);
-		var layout = new Hex.Layout();
 		Debug.Log("Generating map grid: " + (Time.realtimeSinceStartup - t0) + " (" + map.PolygonCount + ", " + map.VertexCount + ")");
 		foreach (Hex.Vertex vertex in map.Vertices) {
-			Vector2 pt = layout.GetScreenPosition(vertex);
+			Vector2 pt = vertex.ToCartesian();
 			vertices.Add(new Vector3(pt.x, 0.0f, pt.y));
 		}
 		/*foreach (Hex.Polygon polygon in map.Polygons) {

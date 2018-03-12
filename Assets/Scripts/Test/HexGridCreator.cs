@@ -20,19 +20,22 @@ public class HexGridCreator : MonoBehaviour {
 		var colors = new List<Color>();
 		var lookup = new Dictionary<Hex.Vertex, int>();
 
+		if (Pointy) {
+			transform.localEulerAngles += new Vector3(0.0f, 30.0f, 0.0f);
+		}
+
 		float t0 = Time.realtimeSinceStartup;
 		var map = Hex.Region.FlatRectangle(Width, Height);
 		Debug.Log("Grid creation: " + (Time.realtimeSinceStartup - t0) + " (" + map.PolygonCount + ", " + map.VertexCount + ")");
-		var layout = new Hex.Layout(Scale, (Pointy ? Hex.Orientation.Pointy : Hex.Orientation.Flat));
 
 		t0 = Time.realtimeSinceStartup;
-		Vector2 disp1 = layout.GetScreenPosition(new Hex.Polygon(2, -1));
-		Vector2 disp2 = layout.GetScreenPosition(new Hex.Polygon(1, 1));
+		Vector2 disp1 = new Vector2(1.0f, 0.0f);
+		Vector2 disp2 = new Vector2(0.5f/Utils.SQRT3, 0.5f);
 		disp1 = (0.5f*LineWidth/disp1.magnitude) * disp1;
 		disp2 = (0.5f*LineWidth/disp2.magnitude) * disp2;
 
 		foreach (Hex.Vertex vertex in map.Vertices) {
-			Vector2 pt = layout.GetScreenPosition(vertex);
+			Vector2 pt = vertex.ToCartesian();
 			lookup[vertex] = vertices.Count;
 			vertices.Add(new Vector3(pt.x, 0.0f, pt.y));
 			colors.Add(LineColor);
@@ -51,7 +54,6 @@ public class HexGridCreator : MonoBehaviour {
 		}
 
 		foreach (Hex.Polygon polygon in map.Polygons) {
-			Vector2 pt = layout.GetScreenPosition(polygon);
 			int[] k = new int[6];
 			for (int i = 0; i < 6; i++) {
 				k[i] = lookup[polygon.GetCorner(i)];

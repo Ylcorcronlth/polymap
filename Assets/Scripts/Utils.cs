@@ -2,6 +2,7 @@
 public class Utils
 {
 	public static float SQRT3 = 1.732050807568877293527446341505872366942805253810380628055f;
+	public static float SQRT3_2 = 0.866025403784438646763723170752936183471402626905190314027f;
     private static uint DELTA = 0x9e3779b9;
     private static uint K0 = 0xae32302b, K1 = 0x21ff7bb2, K2 = 0x312191f, K3 = 0xac27248e;
 

@@ -59,5 +59,18 @@ namespace Hex {
                 }
                 return new Polygon(qi, ri, si);
             }
+
+		public Vector2 ToCartesian() {
+			return new Vector2(
+				Utils.SQRT3_2*q,
+				0.5f*q + r
+			);
+		}
+
+        public static FractionalPolygon FromCartesian(Vector2 position) {
+            float q = position.x/Utils.SQRT3_2;
+            float r = position.y - position.x/Utils.SQRT3;
+            return new FractionalPolygon(q, r);
+        }
     }
 }

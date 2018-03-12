@@ -102,5 +102,14 @@ namespace Hex {
 				return this.Poly - _Touches[direction];
 			}
 		}
+
+		public Vector2 ToCartesian() {
+			Vector2 b = polygon.ToCartesian();
+			if (Side == Type.E) {
+				return b + new Vector2(1.0f/Utils.SQRT3, 0.0f);
+			} else {
+				return b - new Vector2(1.0f/Utils.SQRT3, 0.0f);
+			}
+		}
 	}
 }
