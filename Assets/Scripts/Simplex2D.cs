@@ -176,7 +176,7 @@ public class Simplex2D {
         Vector2 g1 = GradientLookup(i1, j1);
         Vector2 g2 = GradientLookup(i2, j2);
         Vector2 g3 = GradientLookup(i3, j3);
-        
+
 		// Sum contributions and return.
 		float n1 = (g1.x*dx1 + g1.y*dy1)*Utils.Smootherstep(1.0f - d1);
 		float n2 = (g2.x*dx2 + g2.y*dy2)*Utils.Smootherstep(1.0f - d2);
@@ -232,11 +232,11 @@ public class Simplex2D {
         return (n1 + n2 + n3) / MAXVAL;
     }
 
-	public float GetFractalNoise(Vector2 position, int octaves, float gain = 0.5f, float lacunarity = 2.0f) {
+	public float GetFractalNoise(Vector2 position, int octaves = 8, float gain = 0.5f, float lacunarity = 2.0f) {
 		return GetFractalNoise(position.x, position.y, octaves, gain, lacunarity);
 	}
 
-	public float GetFractalNoise(float x, float y, int octaves, float gain = 0.5f, float lacunarity = 2.0f)
+	public float GetFractalNoise(float x, float y, int octaves = 8, float gain = 0.5f, float lacunarity = 2.0f)
 	{
 		uint ui = 1, uj = 0;
 		Utils.TinyEncrypt(ref ui, ref uj);

@@ -266,7 +266,7 @@ MonoBehaviour:
   Width: 17
   Height: 17
   Scale: {x: 1, y: 1}
-  LineWidth: 0.05
+  LineWidth: 0.15
   LineColor: {r: 0, g: 0, b: 0, a: 1}
   Pointy: 0
 --- !u!4 &520564024
