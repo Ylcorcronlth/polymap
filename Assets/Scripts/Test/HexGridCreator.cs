@@ -35,7 +35,7 @@ public class HexGridCreator : MonoBehaviour {
 		disp2 = (0.5f*LineWidth/disp2.magnitude) * disp2;
 
 		foreach (Hex.Vertex vertex in map.Vertices) {
-			Vector2 pt = vertex.ToCartesian();
+			Vector2 pt = vertex.position;
 			lookup[vertex] = vertices.Count;
 			vertices.Add(new Vector3(pt.x, 0.0f, pt.y));
 			colors.Add(LineColor);

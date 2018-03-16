@@ -15,6 +15,8 @@ namespace Hex {
 		public enum Type { E, W };
 		private Polygon Poly;
 		private Type Side;
+		private Vector2 _position;
+		private bool _position_valid = false;
 
 		public int q {
 			get { return Poly.q; }
@@ -34,6 +36,18 @@ namespace Hex {
 
 		public Polygon polygon {
 			get { return Poly; }
+		}
+
+		public Vector2 position {
+			get {
+				if (_position_valid) {
+					return _position;
+				} else {
+					_position_valid = true;
+					_position = ToCartesian();
+					return _position;
+				}
+			}
 		}
 
 		public Vertex(int q = 0, int r = 0, Type side = Type.E) {
@@ -103,8 +117,8 @@ namespace Hex {
 			}
 		}
 
-		public Vector2 ToCartesian() {
-			Vector2 b = polygon.ToCartesian();
+		private Vector2 ToCartesian() {
+			Vector2 b = polygon.position;
 			if (Side == Type.E) {
 				return b + new Vector2(1.0f/Utils.SQRT3, 0.0f);
 			} else {

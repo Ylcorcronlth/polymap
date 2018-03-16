@@ -35,6 +35,24 @@ namespace Hex {
 			this.vertices = new HashSet<Vertex>(vertices);
 		}
 
+		public bool Contains(Polygon polygon) {
+			return polygons.Contains(polygon);
+		}
+
+		public bool Contains(Vertex vertex) {
+			return vertices.Contains(vertex);
+		}
+
+		public Bounds GetBounds(Transform transform) {
+			// Gets bounds in world space for the given transform.
+			Bounds result = new Bounds();
+			foreach (Vertex vertex in Vertices) {
+				Vector3 pos = new Vector3(vertex.position.x, 0.0f, vertex.position.y);
+				result.Encapsulate(transform.TransformPoint(pos));
+			}
+			return result;
+		}
+
 		public static Region FromPolygons(IEnumerable<Polygon> polygons) {
 			var vertices = new HashSet<Vertex>();
 			foreach (Polygon poly in polygons) {
@@ -54,5 +72,6 @@ namespace Hex {
 			}
 			return Region.FromPolygons(polygons);
 		}
+
 	}
 }

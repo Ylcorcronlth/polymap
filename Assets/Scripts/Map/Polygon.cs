@@ -16,6 +16,8 @@ namespace Hex {
 		};
 
 		private int Q, R, S;
+		private Vector2 _position;
+		private bool _position_valid = false;
 
 		public int q {
 			get { return Q; }
@@ -28,8 +30,16 @@ namespace Hex {
 			get { return S; }
 		}
 
-		public int length {
-			get { return 0; }
+		public Vector2 position {
+			get {
+				if (_position_valid) {
+					return _position;
+				} else {
+					_position_valid = true;
+					_position = ToCartesian();
+					return _position;
+				}
+			}
 		}
 
 		public Polygon(int q = 0, int r = 0) {
@@ -93,7 +103,7 @@ namespace Hex {
 			return this + _Corners[direction];
 		}
 
-		public Vector2 ToCartesian() {
+		private Vector2 ToCartesian() {
 			return new Vector2(
 				Utils.SQRT3_2*q,
 				0.5f*q + r
@@ -102,6 +112,10 @@ namespace Hex {
 
 		public Polygon FromCartesian(Vector2 position) {
 			return FractionalPolygon.FromCartesian(position).Round();
+		}
+
+		public override string ToString() {
+			return "(" + q + ", " + r + ")";
 		}
 	}
 }
