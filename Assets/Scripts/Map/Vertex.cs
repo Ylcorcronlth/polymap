@@ -4,38 +4,43 @@ using UnityEngine;
 
 namespace Hex {
 	public class Vertex {
-		private static Vertex[] _Adjacent = {
-			new Vertex(2, -1, Type.W), new Vertex(1, 0, Type.W), new Vertex(1, -1, Type.W)
+		private static Polygon[] _Adjacent = {
+			new Polygon(2, -1, -1), new Polygon(1, 0, -1), new Polygon(1, -1, 0)
 		};
 
 		private static Polygon[] _Touches = {
 			new Polygon(1, 0, -1), new Polygon(0, 0, 0), new Polygon(1, -1, 0)
 		};
 
+		private static HalfEdge.Type[] _Protrudes = {
+			HalfEdge.Type.S, HalfEdge.Type.NE, HalfEdge.Type.SW,
+			HalfEdge.Type.N, HalfEdge.Type.SW, HalfEdge.Type.NE
+		};
+
 		public enum Type { E, W };
-		private Polygon Poly;
-		private Type Side;
+		private Polygon _polygon;
+		private Type _side;
 		private Vector2 _position;
 		private bool _position_valid = false;
 
 		public int q {
-			get { return Poly.q; }
+			get { return _polygon.q; }
 		}
 
 		public int r {
-			get { return Poly.r; }
+			get { return _polygon.r; }
 		}
 
 		public int s {
-			get { return Poly.s; }
+			get { return _polygon.s; }
 		}
 
 		public Type side {
-			get { return Side; }
+			get { return _side; }
 		}
 
 		public Polygon polygon {
-			get { return Poly; }
+			get { return _polygon; }
 		}
 
 		public Vector2 position {
@@ -50,29 +55,39 @@ namespace Hex {
 			}
 		}
 
+		public IEnumerable<HalfEdge> protrudes {
+			get {
+				for (int i = 0; i < 3; i++) {
+					yield return GetProtrudes(i);
+				}
+			}
+		}
+
 		public Vertex(int q = 0, int r = 0, Type side = Type.E) {
-			Poly = new Polygon(q, r);
-			Side = side;
+			_polygon = new Polygon(q, r);
+			_side = side;
 		}
 
-		public static Vertex operator+(Vertex a, Polygon b) {
-			return new Vertex(a.q + b.q, a.r + b.r, a.side);
+		public Vertex(Polygon polygon, Type side = Type.E) {
+			_polygon = polygon;
+			_side = side;
 		}
 
-		public static Vertex operator+(Polygon a, Vertex b) {
-			return new Vertex(a.q + b.q, a.r + b.r, b.side);
-		}
-
-		public static Vertex operator*(int k, Vertex a) {
-			return new Vertex(a.q * k, a.r * k, a.side);
+		private Vector2 ToCartesian() {
+			Vector2 b = polygon.position;
+			if (_side == Type.E) {
+				return b + new Vector2(1.0f/Utils.SQRT3, 0.0f);
+			} else {
+				return b - new Vector2(1.0f/Utils.SQRT3, 0.0f);
+			}
 		}
 
 		public static Vertex operator*(Vertex a, int k) {
-			return new Vertex(a.q * k, a.r * k, a.side);
+			return new Vertex(a._polygon * k, a.side);
 		}
 
 		public static bool operator==(Vertex a, Vertex b) {
-			return a.q == b.q && a.r == b.r && a.side == b.side;
+			return a._polygon == b._polygon && a.side == b.side;
 		}
 
 		public static bool operator!=(Vertex a, Vertex b) {
@@ -97,32 +112,31 @@ namespace Hex {
 			}
 		}
 
-		private Vertex Reverse() {
-			return new Vertex(-q, -r, (Side == Type.E ? Type.W : Type.E));
+		public override string ToString() {
+			return "(" + _polygon.q + ", " + _polygon.r + ", " + _polygon.s + ", " + (_side == Type.E ? "E" : "W") + ")";
 		}
 
 		public Vertex GetAdjacent(int direction) {
 			if (side == Type.E) {
-				return this.Poly + _Adjacent[direction];
+				return new Vertex(this._polygon + _Adjacent[direction], Type.W);
 			} else {
-				return this.Poly + _Adjacent[direction].Reverse();
+				return new Vertex(this._polygon - _Adjacent[direction], Type.E);
 			}
 		}
 
 		public Polygon GetTouches(int direction) {
 			if (side == Type.E) {
-				return this.Poly + _Touches[direction];
+				return this._polygon + _Touches[direction];
 			} else {
-				return this.Poly - _Touches[direction];
+				return this._polygon - _Touches[direction];
 			}
 		}
 
-		private Vector2 ToCartesian() {
-			Vector2 b = polygon.position;
-			if (Side == Type.E) {
-				return b + new Vector2(1.0f/Utils.SQRT3, 0.0f);
+		public HalfEdge GetProtrudes(int direction) {
+			if (side == Type.E) {
+				return new HalfEdge(this.polygon + _Touches[direction], _Protrudes[direction]);
 			} else {
-				return b - new Vector2(1.0f/Utils.SQRT3, 0.0f);
+				return new HalfEdge(this.polygon - _Touches[direction], _Protrudes[3 + direction]);
 			}
 		}
 	}

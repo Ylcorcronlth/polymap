@@ -13,12 +13,61 @@ namespace Hex {
 			get { return (IEnumerable<Polygon>)polygons; }
 		}
 
+		public IEnumerable<Polygon> BorderPolygons {
+			get {
+				foreach (Polygon polygon in Polygons) {
+					bool border = false;
+					for (int i = 0; i < 6; i++) {
+						border = border || polygons.Contains(polygon.GetNeighbor(i));
+					}
+					if (border) {
+						yield return polygon;
+					}
+				}
+			}
+		}
+
 		public int PolygonCount {
 			get { return polygons.Count; }
 		}
 
 		public IEnumerable<Vertex> Vertices {
 			get { return (IEnumerable<Vertex>)vertices; }
+		}
+
+		public IEnumerable<Vertex> BorderVertices {
+			get {
+				foreach (Vertex vertex in Vertices) {
+					bool border = false;
+					for (int i = 0; i < 3; i++) {
+						border = border || polygons.Contains(vertex.GetTouches(i));
+					}
+					if (border) {
+						yield return vertex;
+					}
+				}
+			}
+		}
+
+
+		public IEnumerable<HalfEdge> Edges {
+			get {
+				foreach (Polygon polygon in polygons) {
+					foreach (HalfEdge edge in polygon.borders) {
+						yield return edge;
+					}
+				}
+			}
+		}
+
+		public IEnumerable<HalfEdge> BorderEdges {
+			get {
+				foreach (HalfEdge edge in Edges) {
+					if (true) {
+						yield return edge;
+					}
+				}
+			}
 		}
 
 		public int VertexCount {
@@ -30,7 +79,17 @@ namespace Hex {
 			vertices = new HashSet<Vertex>();
 		}
 
+		public Region(IEnumerable<Polygon> polygons) {
+			this.polygons = new HashSet<Polygon>(polygons);
+			vertices = new HashSet<Vertex>();
+		}
+
 		public Region(IEnumerable<Polygon> polygons, IEnumerable<Vertex> vertices) {
+			this.polygons = new HashSet<Polygon>(polygons);
+			this.vertices = new HashSet<Vertex>(vertices);
+		}
+
+		public Region(IEnumerable<Polygon> polygons, IEnumerable<Vertex> vertices, IEnumerable<HalfEdge> edges) {
 			this.polygons = new HashSet<Polygon>(polygons);
 			this.vertices = new HashSet<Vertex>(vertices);
 		}
@@ -55,12 +114,14 @@ namespace Hex {
 
 		public static Region FromPolygons(IEnumerable<Polygon> polygons) {
 			var vertices = new HashSet<Vertex>();
+			var edges = new HashSet<HalfEdge>();
 			foreach (Polygon poly in polygons) {
 				for (int i = 0; i < 6; i++) {
 					vertices.Add(poly.GetCorner(i));
+					edges.Add(poly.GetBorder(i));
 				}
 			}
-			return new Region(polygons, vertices);
+			return new Region(polygons, vertices, edges);
 		}
 
 		public static Region FlatRectangle(int width, int height, int origin_q = 0, int origin_r = 0) {
