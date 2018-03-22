@@ -50,6 +50,22 @@ namespace Hex {
 			}
 		}
 
+		public IEnumerable<Vertex> corners {
+			get {
+				for (int i = 0; i < 6; i++) {
+					yield return GetCorner(i);
+				}
+			}
+		}
+
+		public IEnumerable<Polygon> neighbors {
+			get {
+				for (int i = 0; i < 6; i++) {
+					yield return GetNeighbor(i);
+				}
+			}
+		}
+
 		public Polygon(int q = 0, int r = 0) {
 			_q = q;
 			_r = r;

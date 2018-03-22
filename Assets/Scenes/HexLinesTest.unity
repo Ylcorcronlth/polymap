@@ -203,7 +203,7 @@ MonoBehaviour:
   Width: 5
   Height: 5
   LineWidth: 0.05
-  BorderLineWidthInternal: 0
+  BorderLineWidthInternal: 0.05
   BorderLineWidthExternal: 0.1
   LineColor: {r: 0.63235295, g: 0.63235295, b: 0.63235295, a: 1}
   BorderColor: {r: 0, g: 0, b: 0, a: 1}

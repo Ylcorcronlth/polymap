@@ -94,12 +94,39 @@ namespace Hex {
 			this.vertices = new HashSet<Vertex>(vertices);
 		}
 
+		public void Add(Polygon polygon) {
+			polygons.Add(polygon);
+			foreach (Vertex vertex in polygon.corners) {
+				vertices.Add(vertex);
+			}
+		}
+
+		public void Remove(Polygon polygon) {
+			polygons.Remove(polygon);
+			foreach (Vertex vertex in polygon.corners) {
+				bool contains = false;
+				foreach (Polygon touches in vertex.touches) {
+					if (Contains(touches)) {
+						contains = true;
+						break;
+					}
+				}
+				if (!contains) {
+					vertices.Remove(vertex);
+				}
+			}
+		}
+
 		public bool Contains(Polygon polygon) {
 			return polygons.Contains(polygon);
 		}
 
 		public bool Contains(Vertex vertex) {
 			return vertices.Contains(vertex);
+		}
+
+		public bool Contains(HalfEdge edge) {
+			return polygons.Contains(edge.polygon);
 		}
 
 		public Bounds GetBounds(Transform transform) {

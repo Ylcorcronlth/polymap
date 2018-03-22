@@ -63,6 +63,22 @@ namespace Hex {
 			}
 		}
 
+		public IEnumerable<Polygon> touches {
+			get {
+				for (int i = 0; i < 3; i++) {
+					yield return GetTouches(i);
+				}
+			}
+		}
+
+		public IEnumerable<Vertex> adjacent {
+			get {
+				for (int i = 0; i < 3; i++) {
+					yield return GetAdjacent(i);
+				}
+			}
+		}
+
 		public Vertex(int q = 0, int r = 0, Type side = Type.E) {
 			_polygon = new Polygon(q, r);
 			_side = side;
